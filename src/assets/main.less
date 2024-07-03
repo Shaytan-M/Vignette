@@ -1,0 +1,54 @@
+@import '../base.css';
+@import url('https://unpkg.com/leaflet@1.9.3/dist/leaflet.css');
+#app {
+    width: 1300px;
+    max-width: 94%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    font-weight: normal;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    height: 100vh;
+}
+p {
+    font-size: 18px;
+    line-height: 1.2;
+}
+h2 {
+    font-size: 25px;
+    line-height: 1.1;
+}
+a,
+.green {
+    text-decoration: none;
+    color: #00bd7e;
+}
+
+@media (hover: hover) {
+    a:hover {
+        background-color: hsla(160, 100%, 37%, 0.2);
+    }
+}
+
+.default-btn {
+    background-color: #383838;
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 14px;
+    color: hsla(160, 100%, 37%, 1);
+    cursor: pointer;
+    border: none;
+    box-shadow: 1px 1px 10px 1px rgb(37, 48, 37);
+
+    &:hover {
+        background-color: rgb(37, 48, 37);
+        box-shadow: 1px 1px 10px 1px;
+    }
+    &:disabled {
+        box-shadow: none;
+        color: rgba(0, 189, 126, 0.438);
+        background-color: #2424248f;
+        &:hover {
+            background-color: #2424248f;
+        }
+    }
+}

@@ -1,0 +1,114 @@
+<template>
+    <v-container>
+        <v-row>
+            <v-col cols="6">
+                <v-text-field
+                    type="number"
+                    color="green"
+                    v-model.number="sizeX"
+                    label="Size X"
+                    :rules="exampleRules"
+                ></v-text-field>
+            </v-col>
+            <v-col cols="6">
+                <v-text-field
+                    type="number"
+                    color="green"
+                    v-model.number="sizeY"
+                    label="Size Y"
+                ></v-text-field>
+            </v-col>
+        </v-row>
+    </v-container>
+    <v-container class="d-flex justify-center align-center">
+        <div>
+            <v-row v-for="(row, y) in grid" :key="y">
+                <v-col
+                    cols="auto"
+                    v-for="(cell, x) in row"
+                    :key="x"
+                    class="pa-0"
+                    :class="'bg-' + cell.color"
+                    @mouseover="toggleColor(x, y)"
+                >
+                    <div class="border-thin" style="height: 36px; width: 36px"></div>
+                </v-col>
+            </v-row>
+        </div>
+    </v-container>
+    <!-- Контейнер для додавання блоку з картками -->
+    <div class="cardsContainer" ref="cardsContainer"></div>
+</template>
+<script>
+import { ref, watch, onMounted } from 'vue';
+import { createCardsWrapper, fetchData, updateCards } from '../vignette.lib.js';
+export default {
+    async mounted() {
+        const onChangeCountry = async (selectedCountry) => {
+            try {
+                const data = await fetchData(
+                    `https://sandbox-api.vignette.id/public/products?country=${selectedCountry}&type=vignette&currency=UAH`,
+                );
+                updateCards(data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
+
+        const cardsWrapper = createCardsWrapper(onChangeCountry);
+        this.$refs.cardsContainer.appendChild(cardsWrapper);
+
+        try {
+            const data = await fetchData(
+                'https://sandbox-api.vignette.id/public/products?country=at&type=vignette&currency=UAH',
+            );
+            updateCards(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    },
+    setup() {
+        const sizeX = ref(0);
+        const sizeY = ref(0);
+        const grid = ref([]);
+        const exampleRules = ref([(v) => (v && v <= 35) || 'Max 35']);
+
+        const createGrid = () => {
+            grid.value = Array.from({ length: sizeY.value }, () =>
+                Array.from({ length: sizeX.value > 35 ? 0 : sizeX.value }, () => ({
+                    color: 'white',
+                })),
+            );
+        };
+
+        const toggleColor = (x, y) => {
+            grid.value[y][x].color = grid.value[y][x].color === 'white' ? 'blue' : 'white';
+        };
+
+        watch([sizeX, sizeY], () => {
+            createGrid();
+        });
+
+        onMounted(() => {
+            createGrid();
+        });
+
+        return { sizeX, sizeY, grid, toggleColor, exampleRules };
+    },
+};
+</script>
+<style>
+.vignette-cards-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border: 2px solid #ccc;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.vignette-cards-item {
+    border: 1px solid #ccc;
+    padding: 16px;
+}
+</style>
