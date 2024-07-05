@@ -49,27 +49,39 @@ export function createCountrySelect(countries, onChangeCallback) {
     return select;
 }
 
-export function createCardsWrapper(onChangeCallback) {
+export async function onChangeCountry(selectedCountry) {
+    try {
+        await fetchData(selectedCountry);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+export function createCardsWrapper() {
     const wrapper = createElementWithClass('div', 'vignette-cards-wrapper');
     const selectWrapper = createElementWithClass('div', 'vignette-select-wrapper', wrapper);
     const cardsRow = createElementWithClass('div', 'vignette-cards-row', wrapper);
-    const select = createCountrySelect(countries, onChangeCallback);
+    const select = createCountrySelect(countries, onChangeCountry);
     selectWrapper.appendChild(select);
     return wrapper;
 }
 
-export async function fetchData(url) {
+export async function fetchData(country = 'at') {
     try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                Authorization: 'Bearer zpka_2e72513582f446a59e7df2997b7b4ee4_49a8220e',
+        const response = await fetch(
+            `https://sandbox-api.vignette.id/public/products?country=${country}&type=vignette&currency=UAH`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: 'Bearer zpka_2e72513582f446a59e7df2997b7b4ee4_49a8220e',
+                },
             },
-        });
+        );
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
+        updateCards(data);
         return data;
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -80,8 +92,8 @@ export async function fetchData(url) {
 export function updateCards(data) {
     const cardsRow = document.querySelector('.vignette-cards-row');
     cardsRow.innerHTML = ''; // Очистка існуючих карток
-    data.result.forEach((product, index) => {
-        const card = createCardElement(`Product ${index + 1}`, product.name);
+    data.result.forEach((product) => {
+        const card = createCardElement(product.title);
         cardsRow.appendChild(card);
     });
 }

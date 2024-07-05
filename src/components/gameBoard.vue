@@ -41,28 +41,13 @@
 </template>
 <script>
 import { ref, watch, onMounted } from 'vue';
-import { createCardsWrapper, fetchData, updateCards } from '../vignette.lib.js';
+import { createCardsWrapper, fetchData, onChangeCountry } from '../vignette.lib.js';
 export default {
     async mounted() {
-        const onChangeCountry = async (selectedCountry) => {
-            try {
-                const data = await fetchData(
-                    `https://sandbox-api.vignette.id/public/products?country=${selectedCountry}&type=vignette&currency=UAH`,
-                );
-                updateCards(data);
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        };
-
-        const cardsWrapper = createCardsWrapper(onChangeCountry);
+        const cardsWrapper = createCardsWrapper();
         this.$refs.cardsContainer.appendChild(cardsWrapper);
-
         try {
-            const data = await fetchData(
-                'https://sandbox-api.vignette.id/public/products?country=at&type=vignette&currency=UAH',
-            );
-            updateCards(data);
+            await fetchData();
         } catch (error) {
             console.error('Error:', error);
         }
