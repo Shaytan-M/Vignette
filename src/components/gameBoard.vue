@@ -82,18 +82,4 @@ export default {
     },
 };
 </script>
-<style>
-.vignette-cards-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    border: 2px solid #ccc;
-    padding: 16px;
-    margin-top: 16px;
-}
-
-.vignette-cards-item {
-    border: 1px solid #ccc;
-    padding: 16px;
-}
-</style>
+<style></style>

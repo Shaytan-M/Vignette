@@ -1,19 +1,82 @@
 .cardsContainer {
-    .vignette-cards-row {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+    .vignette-section {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        border: 2px solid #ccc;
+        padding: 16px;
+        margin-top: 16px;
+    }
+    .vignette-input-car-number {
+        background-color: #fff !important;
+    }
+    .vignette-car-info-row {
+        .vignette-car-types-wrapper {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
 
         .vignette-cards-item {
-            background-color: #00a3ff;
-            cursor: pointer;
+            background-color: #fff;
+            border-radius: 25px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ccc;
+            padding: 16px;
+            h2 {
+                color: #000;
+            }
         }
     }
     .vignette-select-wrapper {
-        select {
-            color: #fff;
-            option {
-                color: #000;
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 15px;
+        .countryBlock {
+            text-align: center;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 5px;
+            color: #000;
+            cursor: pointer;
+            &.active {
+                box-shadow: inset 1px 1px 15px 1px #00a3ff;
+            }
+        }
+    }
+    .btn {
+        cursor: pointer;
+        padding: 5px 10px;
+        background-color: #000;
+        font-size: 20px;
+        text-align: center;
+        color: #fff;
+        text-transform: uppercase;
+        border-radius: 12px;
+        font-weight: 700;
+        margin-top: 10px;
+        background-color: #00a3ff;
+    }
+    .vignette-price-row {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        .vignette-price-item {
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #000;
+            transition: all 0.3s;
+            &.active {
+                background-color: #00a3ff;
+                color: #fff;
+            }
+            &:hover {
+                background-color: #00a3ff;
+                color: #fff;
             }
         }
     }
